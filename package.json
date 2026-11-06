@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "next dev",
-  "predev": "node ./scripts/copy-maplibre-worker.mjs",
-  "build": "next build",
-  "prebuild": "node ./scripts/copy-maplibre-worker.mjs",
-  "start": "next start",
-  "lint": "eslint"
+    "dev": "next dev",
+    "predev": "node ./scripts/copy-maplibre-worker.mjs",
+    "build": "next build",
+    "prebuild": "node ./scripts/copy-maplibre-worker.mjs",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
+    "lucide-react": "^1.69.0",
     "maplibre-gl": "^6.11.2",
     "next": "16.3.8",
     "react": "19.2.4",

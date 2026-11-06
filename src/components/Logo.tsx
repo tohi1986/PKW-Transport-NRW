@@ -10,7 +10,7 @@ export default function Logo() {
     >
       
 <Image
-  src="/logo11.png"
+  src="/images/Logo01.png"
   alt="PKW Transport NRW"
   width={2170}
   height={659}

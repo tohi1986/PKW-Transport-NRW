@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import localFont from "next/font/local";
+import CallButton from "@/components/CallButton";
 
 const spaceGrotesk = localFont({
   src: "../../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",
@@ -42,31 +43,37 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
-
     <html lang="de">
       <body
-        className={`${spaceGrotesk.variable} ${barlow.variable} flex min-h-dvh flex-col`}
+        className={`${spaceGrotesk.variable} ${barlow.variable} relative min-h-dvh bg-black text-white`}
       >
-        <Navbar />
+        <main className="relative z-0 w-full min-h-dvh">
+          {children}
+        </main>
+      
+        <div className="absolute inset-x-0 top-0 z-50 flex flex-col pointer-events-none">
+          <div className="pointer-events-auto">
+            <Navbar />
 
-        <section className="flex items-center justify-between border-y border-amber-500/50 bg-slate-950 px-5 py-0.5 ">
-          <span className="text-[10px] font-bold tracking-widest text-amber-500">
-            24/7
-          </span>
+            <section className="flex items-center justify-between border-y border-amber-500/30 bg-slate-950/25 px-5  backdrop-blur-md">
+              <span className="text-[9px] font-bold tracking-widest text-amber-500">
+                24/7 &nbsp;&nbsp;&nbsp; ESSEN
+              </span>
 
-          <span className="text-[10px] font-bold tracking-widest text-amber-500">
-            LIVE-FAHRZEUGTRACKING
-          </span>
-        </section>
+              <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-widest text-amber-500">
+                LIVE-FAHRZEUGTRACKING
+              </span>
 
-        <div className="sflex-1">{children}</div>
+
+            </section>
+          </div>
+              <CallButton/>
+        </div>
       </body>
     </html>
   );

@@ -1,13 +1,31 @@
-
 @import "tailwindcss";
 
-:root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+@layer base {
+  :root {
+    --total-duration: 12s; /* Povećano da stane 3s pauze na kraju */
+  }
 }
 
-* {
-  box-sizing: border-box;
+@keyframes letterWaveClean {
+  0%, 15%, 100% {
+    transform: scale(1);
+    color: #f59e0b;
+    text-shadow: none;
+  }
+
+  5% {
+    transform: scale(1.08);
+    color: #fde047;
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.8);
+  }
+}
+
+.amber-letter-anim span {
+  display: inline-block;
+  color: #f59e0b; /* Osigurava da je boja uvijek inicijalno amber */
+  animation: letterWaveClean var(--total-duration, 9s) infinite;
+  animation-delay: calc((var(--char-index) * 0.05s) + var(--element-delay, 0s));
+  transition: transform 0.2s ease;
 }
 
 html {
@@ -15,8 +33,59 @@ html {
 }
 
 body {
-  margin: 0;
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-space-grotesk), sans-serif;
+  background-color: #000000;
+  color: #ffffff;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .amber-letter-anim span {
+    animation: none;
+  }
+}
+
+/* Minimalistička i neupadljiva MapLibre info/attribution kontrola */
+.maplibregl-ctrl-attrib {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  color: #475569 !important; /* Tamnija, diskretna siva boja */
+  font-size: 6px !important; /* Ekstremno sitan tekst */
+  padding: 1px 3px !important;
+  border-radius: 2px;
+  backdrop-filter: blur(2px);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+}
+
+.maplibregl-ctrl-attrib a {
+  color: #64748b !important; /* Prigušena boja linka */
+  text-decoration: none;
+}
+
+.maplibregl-ctrl-attrib a:hover {
+  color: #f59e0b !important;
+  text-decoration: underline;
+}
+
+@keyframes radar-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.8);
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+    box-shadow: 0 0 0 16px rgba(6, 182, 212, 0);
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+    box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+  }
+}
+
+.animate-radar-ping {
+  animation: radar-ping 6s infinite cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+
