@@ -1,8 +1,9 @@
+
 @import "tailwindcss";
 
 @layer base {
   :root {
-    --total-duration: 12s; /* Povećano da stane 3s pauze na kraju */
+    --total-duration: 12s;
   }
 }
 
@@ -22,10 +23,47 @@
 
 .amber-letter-anim span {
   display: inline-block;
-  color: #f59e0b; /* Osigurava da je boja uvijek inicijalno amber */
-  animation: letterWaveClean var(--total-duration, 9s) infinite;
+  color: #f59e0b;
+  animation: letterWaveClean var(--total-duration, 12s) infinite;
   animation-delay: calc((var(--char-index) * 0.05s) + var(--element-delay, 0s));
   transition: transform 0.2s ease;
+}
+
+.nav-link {
+  display: inline-block;
+  transform: scaleY(1.3);
+  white-space: nowrap;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  transition: color 0.2s ease;
+}
+
+@media (min-width: 350px) {
+  .nav-link {
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 390px) {
+  .nav-link {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .nav-link {
+    transform: scaleY(1);
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-link {
+    font-size: 1.875rem;
+  }
 }
 
 html {
@@ -42,13 +80,15 @@ body {
   .amber-letter-anim span {
     animation: none;
   }
-}
 
-/* Minimalistička i neupadljiva MapLibre info/attribution kontrola */
+  .nav-link {
+    transform: none;
+  }
+}
 .maplibregl-ctrl-attrib {
   background-color: rgba(0, 0, 0, 0.4) !important;
-  color: #475569 !important; /* Tamnija, diskretna siva boja */
-  font-size: 6px !important; /* Ekstremno sitan tekst */
+  color: #475569 !important;
+  font-size: 6px !important;
   padding: 1px 3px !important;
   border-radius: 2px;
   backdrop-filter: blur(2px);
@@ -56,7 +96,7 @@ body {
 }
 
 .maplibregl-ctrl-attrib a {
-  color: #64748b !important; /* Prigušena boja linka */
+  color: #64748b !important;
   text-decoration: none;
 }
 
@@ -71,11 +111,13 @@ body {
     opacity: 0.9;
     box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.8);
   }
+
   70% {
     transform: scale(2.2);
     opacity: 0;
     box-shadow: 0 0 0 16px rgba(6, 182, 212, 0);
   }
+
   100% {
     transform: scale(2.2);
     opacity: 0;
@@ -89,3 +131,24 @@ body {
 
 
 
+
+@keyframes smoothSlot {
+  0% {
+    transform: translateY(-8px) scale(1.1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0) scale(1.1);
+    opacity: 1;
+  }
+}
+
+.animate-smooth-slot {
+  animation: smoothSlot 160ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-smooth-slot {
+    animation: none;
+  }
+}

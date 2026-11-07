@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" role="img" aria-label="Flag of the United Kingdom">
+  <rect width="1000" height="600" fill="#012169"/>
+  <path d="M0 0 1000 600 M1000 0 0 600" stroke="#fff" stroke-width="120"/>
+  <path d="M0 0 1000 600 M1000 0 0 600" stroke="#c8102e" stroke-width="54"/>
+  <path d="M500 0v600 M0 300h1000" stroke="#fff" stroke-width="200"/>
+  <path d="M500 0v600 M0 300h1000" stroke="#c8102e" stroke-width="112"/>
+</svg>
