@@ -15,7 +15,7 @@ export default function Navbar() {
           <div className="flex min-h-16 items-center justify-between gap-1 py-2">
             <Logo />
 
-            <div className="flex min-w-0 flex-nowrap items-center gap-2 min-[350px]:gap-3 sm:gap-5 lg:gap-10">
+            <div className="flex min-w-0 flex-nowrap items-center gap-1 min-[350px]:gap-2 sm:gap-5 lg:gap-10">
               {navItems.map((item, itemIndex) => (
                 <Link
                   key={item.href}
