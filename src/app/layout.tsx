@@ -1,8 +1,12 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
+
 import Navbar from "@/components/Navbar";
-import localFont from "next/font/local";
 import CallButton from "@/components/CallButton";
+import AnimationController from "@/components/AnimationController";
+
+import localFont from "next/font/local";
 
 const spaceGrotesk = localFont({
   src: "../../public/fonts/SpaceGrotesk-VariableFont_wght.ttf",
@@ -52,28 +56,29 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${barlow.variable} relative min-h-dvh bg-black text-white`}
       >
-        <main className="relative z-0 w-full min-h-dvh">
-          {children}
-        </main>
-      
-        <div className="absolute inset-x-0 top-0 z-50 flex flex-col pointer-events-none">
-          <div className="pointer-events-auto">
-            <Navbar />
+        <AnimationController>
+          <main className="relative z-0 w-full min-h-dvh">
+            {children}
+          </main>
 
-            <section className="flex items-center justify-between border-y border-amber-500/30 bg-slate-950/25 px-5  backdrop-blur-md">
-              <span className="text-[9px] font-bold tracking-widest text-amber-500">
-                24/7 &nbsp;&nbsp;&nbsp; ESSEN
-              </span>
+          <div className="absolute inset-x-0 top-0 z-50 flex flex-col pointer-events-none">
+            <div className="pointer-events-auto">
+              <Navbar />
 
-              <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-widest text-amber-500">
-                LIVE-FAHRZEUGTRACKING
-              </span>
+              <section className="flex items-center justify-between border-y border-amber-500/30 bg-slate-950/25 px-5 backdrop-blur-md">
+                <span className="text-[9px] font-bold tracking-widest text-amber-500">
+                  24/7 &nbsp;&nbsp;&nbsp; ESSEN
+                </span>
 
+                <span className="flex items-center gap-1.5 text-[9px] font-bold tracking-widest text-amber-500">
+                  LIVE-FAHRZEUGTRACKING
+                </span>
+              </section>
+            </div>
 
-            </section>
+            <CallButton />
           </div>
-              <CallButton/>
-        </div>
+        </AnimationController>
       </body>
     </html>
   );

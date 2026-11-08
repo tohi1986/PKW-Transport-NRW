@@ -21,11 +21,7 @@ export default function Navbar() {
                   key={item.href}
                   href={item.href}
                   className="amber-letter-anim nav-link"
-                  style={
-                    {
-                      "--element-delay": itemIndex === 0 ? "0s" : "4.5s",
-                    } as React.CSSProperties
-                  }
+                  data-anim-target={`link${itemIndex + 1}`}
                 >
                   {item.label.split("").map((char, charIndex) => (
                     <span
