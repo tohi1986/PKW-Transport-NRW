@@ -7,10 +7,12 @@ export default function CallButton() {
         aria-label="Anrufen"
         className="group relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-slate-950 text-cyan-400 border-2 border-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.6)] hover:shadow-[0_0_30px_rgba(245,158,11,0.9)] backdrop-blur-md transition-all duration-300 hover:bg-slate-900 hover:scale-110 active:scale-95"
       >
+        {/* Radar unutar amber bordera */}
         <span className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden rounded-xl">
           <span className="h-6 w-6 rounded-full border border-cyan-500 animate-radar-ping" />
         </span>
 
+        {/* Originalna rotacija slušalice */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

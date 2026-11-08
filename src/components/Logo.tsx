@@ -12,8 +12,8 @@ export default function Logo() {
 <Image
   src="/images/Logo01.png"
   alt="PKW Transport NRW"
-  width={2170}
-  height={659}
+  width={2172}
+  height={724}
   priority
   className="h-auto w-40 sm:w-48 md:w-56 lg:w-72"
 />
