@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export default function Logo() {
   return (
@@ -14,7 +14,7 @@ export default function Logo() {
         width={2172}
         height={724}
         priority
-        className="h-auto w-28 min-[350px]:w-32 min-[390px]:w-36 sm:w-48 md:w-56 lg:w-72"
+        className="block h-auto w-28 min-[350px]:w-32 min-[390px]:w-36 sm:w-48 md:w-56 lg:w-56"
       />
     </Link>
   );

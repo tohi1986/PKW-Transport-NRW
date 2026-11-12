@@ -1,0 +1,15 @@
+
+{
+  "Navbar": {
+    "services": "Services",
+    "assistant": "Assistant",
+    "navigationLabel": "Main navigation"
+  },
+  "Layout": {
+    "liveTracking": "LIVE VEHICLE TRACKING"
+  },
+  "Metadata": {
+  "title": "PKW Transport NRW | Towing & Vehicle Transport",
+  "description": "Towing, roadside assistance and vehicle transport for vehicles up to 3.5 t across North Rhine-Westphalia."
+}
+}

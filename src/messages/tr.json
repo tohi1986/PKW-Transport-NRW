@@ -1,0 +1,15 @@
+
+{
+  "Navbar": {
+    "services": "Hizmetler",
+    "assistant": "Asistan",
+    "navigationLabel": "Ana menü"
+  },
+  "Layout": {
+  "liveTracking": "CANLI ARAÇ TAKİBİ"
+},
+"Metadata": {
+  "title": "PKW Transport NRW | Araç Çekme ve Taşıma",
+  "description": "Kuzey Ren-Vestfalya'da 3,5 tona kadar araçlar için çekici hizmeti, yol yardımı ve araç taşıma."
+}
+}

@@ -1,0 +1,15 @@
+
+{
+  "Navbar": {
+    "services": "Leistungen",
+    "assistant": "Assistent",
+    "navigationLabel": "Hauptnavigation"
+  },
+  "Layout": {
+  "liveTracking": "LIVE-FAHRZEUGTRACKING"
+},
+"Metadata": {
+  "title": "PKW Transport NRW | Abschleppdienst bis 3,5 t",
+  "description": "PKW Transport NRW – Abschleppdienst, Pannenhilfe und Fahrzeugtransport bis 3,5 t in Nordrhein-Westfalen."
+}
+}
