@@ -1,0 +1,15 @@
+
+{
+  "Navbar": {
+    "services": "Usługi",
+    "assistant": "Asystent",
+    "navigationLabel": "Nawigacja główna"
+  },
+  "Layout": {
+  "liveTracking": "ŚLEDZENIE POJAZDU NA ŻYWO"
+},
+"Metadata": {
+  "title": "PKW Transport NRW | Pomoc drogowa i transport aut",
+  "description": "Pomoc drogowa, holowanie i transport pojazdów do 3,5 t na terenie Nadrenii Północnej-Westfalii."
+}
+}

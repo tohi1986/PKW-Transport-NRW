@@ -204,3 +204,25 @@ body {
     transform: none;
   }
 }
+
+
+
+
+
+/* Normalno prikazujemo odabranu zastavu */
+.language-selected {
+  opacity: 1;
+}
+
+.language-reel {
+  opacity: 0;
+}
+
+/* Tijekom slot-machine animacije prikazujemo reel */
+html[data-animation-stage="flags"] .language-selected {
+  opacity: 0;
+}
+
+html[data-animation-stage="flags"] .language-reel {
+  opacity: 1;
+}

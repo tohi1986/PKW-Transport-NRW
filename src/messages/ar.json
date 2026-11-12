@@ -1,0 +1,15 @@
+
+{
+  "Navbar": {
+    "services": "الخدمات",
+    "assistant": "المساعد",
+    "navigationLabel": "القائمة الرئيسية"
+  },
+  "Layout": {
+  "liveTracking": "تتبع المركبة المباشر"
+},
+"Metadata": {
+  "title": "PKW Transport NRW | سحب ونقل السيارات",
+  "description": "خدمات سحب السيارات والمساعدة على الطريق ونقل المركبات حتى 3.5 طن في شمال الراين-وستفاليا."
+}
+}
