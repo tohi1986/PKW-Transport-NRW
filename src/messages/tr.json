@@ -1,15 +1,25 @@
-
 {
   "Navbar": {
     "services": "Hizmetler",
     "assistant": "Asistan",
-    "navigationLabel": "Ana menü"
+    "navigationLabel": "Ana navigasyon"
   },
   "Layout": {
-  "liveTracking": "CANLI ARAÇ TAKİBİ"
-},
-"Metadata": {
-  "title": "PKW Transport NRW | Araç Çekme ve Taşıma",
-  "description": "Kuzey Ren-Vestfalya'da 3,5 tona kadar araçlar için çekici hizmeti, yol yardımı ve araç taşıma."
-}
+    "liveTracking": "CANLI ARAÇ TAKİBİ"
+  },
+  "Metadata": {
+    "title": "PKW Transport NRW | 3,5 tona kadar çekici hizmeti",
+    "description": "PKW Transport NRW – Kuzey Ren-Vestfalya bölgesinde 3,5 tona kadar çekici hizmeti, yol yardımı ve araç taşıma."
+  },
+
+  "Map": {
+    "title": "KONUMUNUZ",
+    "gps": "GPS kullan",
+    "pinHint": "Konum için haritaya 1 sn. basılı tutun",
+    "back": "Geri",
+    "addressPlaceholder": "Adresinizi girin...",
+    "useAddress": "Adres",
+    "addressNotFound": "Adres bulunamadı.",
+    "gpsError": "Konumunuz belirlenemedi."
+  }
 }

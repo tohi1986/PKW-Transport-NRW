@@ -1,4 +1,3 @@
-
 {
   "Navbar": {
     "services": "Usługi",
@@ -6,10 +5,21 @@
     "navigationLabel": "Nawigacja główna"
   },
   "Layout": {
-  "liveTracking": "ŚLEDZENIE POJAZDU NA ŻYWO"
-},
-"Metadata": {
-  "title": "PKW Transport NRW | Pomoc drogowa i transport aut",
-  "description": "Pomoc drogowa, holowanie i transport pojazdów do 3,5 t na terenie Nadrenii Północnej-Westfalii."
-}
+    "liveTracking": "ŚLEDZENIE POJAZDU NA ŻYWO"
+  },
+  "Metadata": {
+    "title": "PKW Transport NRW | Pomoc drogowa do 3,5 t",
+    "description": "PKW Transport NRW – pomoc drogowa, wsparcie na trasie i transport pojazdów do 3,5 t w Nadrenii Północnej-Westfalii."
+  },
+
+  "Map": {
+    "title": "TWOJA LOKALIZACJA",
+    "gps": "Użyj GPS",
+    "pinHint": "Przytrzymaj mapę 1 s, aby ustawić pinezkę",
+    "back": "Wstecz",
+    "addressPlaceholder": "Wpisz adres...",
+    "useAddress": "Adres",
+    "addressNotFound": "Nie znaleziono adresu.",
+    "gpsError": "Nie udało się ustalić lokalizacji."
+  }
 }

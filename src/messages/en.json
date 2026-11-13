@@ -1,4 +1,3 @@
-
 {
   "Navbar": {
     "services": "Services",
@@ -9,7 +8,18 @@
     "liveTracking": "LIVE VEHICLE TRACKING"
   },
   "Metadata": {
-  "title": "PKW Transport NRW | Towing & Vehicle Transport",
-  "description": "Towing, roadside assistance and vehicle transport for vehicles up to 3.5 t across North Rhine-Westphalia."
-}
+    "title": "PKW Transport NRW | Towing service up to 3.5 t",
+    "description": "PKW Transport NRW – towing service, roadside assistance and vehicle transport up to 3.5 t in North Rhine-Westphalia."
+  },
+
+  "Map": {
+    "title": "YOUR LOCATION",
+    "gps": "Use GPS",
+    "pinHint": "Hold map 1 sec to place a pin",
+    "back": "Back",
+    "addressPlaceholder": "Enter your address...",
+    "useAddress": "Address",
+    "addressNotFound": "Address not found.",
+    "gpsError": "Could not determine your location."
+  }
 }
