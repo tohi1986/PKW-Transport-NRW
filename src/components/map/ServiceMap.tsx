@@ -1,4 +1,7 @@
+
 "use client";
+
+import { createUserPin } from "./createUserPin";
 
 import {
   useCallback,
@@ -10,18 +13,17 @@ import {
 
 import { useLocale, useTranslations } from "next-intl";
 
-import { ArrowLeft, Keyboard, LocateFixed, MapPin, Search } from "lucide-react";
-
 import {
   Map,
   Marker,
-  GeolocateControl,
   AttributionControl,
   setWorkerUrl,
 } from "maplibre-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
+
 import { createVehiclePin } from "./createVehiclePin";
+import LocationPanel from "./LocationPanel";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
@@ -31,40 +33,54 @@ export default function ServiceMap() {
 
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<Map | null>(null);
-  const geolocateRef = useRef<GeolocateControl | null>(null);
   const userMarkerRef = useRef<Marker | null>(null);
 
   const [addressOpen, setAddressOpen] = useState(false);
   const [address, setAddress] = useState("");
-  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
+  const [isSearchingAddress, setIsSearchingAddress] =
+    useState(false);
 
   const [addressError, setAddressError] = useState("");
   const [gpsError, setGpsError] = useState(false);
 
-  // Postavlja korisnikov cijan pin
-  const placeUserMarker = useCallback((lng: number, lat: number) => {
+  // ----------------------------------------
+ // KORISNIKOV PIN
+// ----------------------------------------
+
+const placeUserMarker = useCallback(
+  (lng: number, lat: number) => {
     const map = mapRef.current;
+
     if (!map) return;
 
-    // Uklanja prethodni korisnikov pin
+    // Ukloni prethodni korisnikov pin
     userMarkerRef.current?.remove();
 
+    // Postavi novi amber pin s cijan sredinom
     userMarkerRef.current = new Marker({
-      color: "#06b6d4",
+      element: createUserPin(),
+      anchor: "bottom",
     })
       .setLngLat([lng, lat])
       .addTo(map);
 
-    map.flyTo({
-      center: [lng, lat],
-      zoom: 14,
-      essential: true,
-    });
+      // Centriraj kartu na odabranu lokaciju
+      map.flyTo({
+        center: [lng, lat],
+        zoom: 14,
+        essential: true,
+      });
 
-    setGpsError(false);
-    setAddressError("");
-    setAddressOpen(false);
-  }, []);
+      setGpsError(false);
+      setAddressError("");
+      setAddressOpen(false);
+    },
+    []
+  );
+
+  // ----------------------------------------
+  // INICIJALIZACIJA KARTE
+  // ----------------------------------------
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -81,31 +97,82 @@ export default function ServiceMap() {
 
     mapRef.current = map;
 
-    map.addControl(new AttributionControl({ compact: true }), "top-left");
+    // ----------------------------------------
+    // MAPLIBRE ATRIBUCIJA
+    // ----------------------------------------
 
-    // GPS lokacija korisnika
-    const geolocate = new GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true,
-        timeout: 15000,
-      },
-      trackUserLocation: false,
-      showUserLocation: false,
-      showAccuracyCircle: false,
+    map.addControl(
+      new AttributionControl({ compact: true }),
+      "top-left"
+    );
+
+    // Zatvori compact atribuciju pri učitavanju
+    map.once("load", () => {
+      const attribution = map
+        .getContainer()
+        .querySelector<HTMLElement>(
+          ".maplibregl-ctrl-top-left .maplibregl-ctrl-attrib"
+        );
+
+      if (!attribution) return;
+
+      attribution.classList.remove(
+        "maplibregl-compact-show"
+      );
+
+      attribution.removeAttribute("open");
     });
 
-    map.addControl(geolocate, "top-right");
-    geolocateRef.current = geolocate;
+    // Pronađi naš header
+    const header = document.getElementById("map-header");
 
-    geolocate.on("geolocate", (position) => {
-      placeUserMarker(position.coords.longitude, position.coords.latitude);
-    });
+    const infoCorner = map
+      .getContainer()
+      .querySelector<HTMLElement>(
+        ".maplibregl-ctrl-top-left"
+      );
 
-    geolocate.on("error", () => {
-      setGpsError(true);
-    });
+    function positionMapInfo() {
+      if (!header || !infoCorner) return;
 
-    // Postojeći pin šlep-vozila
+      const headerBottom =
+        header.getBoundingClientRect().bottom;
+
+      const mapTop =
+        map.getContainer().getBoundingClientRect().top;
+
+      const offset = Math.max(
+        8,
+        headerBottom - mapTop + 8
+      );
+
+      infoCorner.style.setProperty(
+        "top",
+        `${offset}px`,
+        "important"
+      );
+    }
+
+    positionMapInfo();
+
+    // Prati promjene visine Navbara
+    const headerObserver = new ResizeObserver(
+      positionMapInfo
+    );
+
+    if (header) {
+      headerObserver.observe(header);
+    }
+
+    window.addEventListener(
+      "resize",
+      positionMapInfo
+    );
+
+    // ----------------------------------------
+    // POSTOJEĆI PIN ŠLEP-VOZILA
+    // ----------------------------------------
+
     const isMobile = window.innerWidth < 640;
     const pinElement = createVehiclePin(isMobile);
 
@@ -118,12 +185,14 @@ export default function ServiceMap() {
       .addTo(map);
 
     // ----------------------------------------
-    // LONG PRESS — držanje karte 1 sekundu
+    // LONG PRESS — 1 SEKUNDA
     // ----------------------------------------
 
     const canvas = map.getCanvas();
 
-    let holdTimer: ReturnType<typeof setTimeout> | null = null;
+    let holdTimer: ReturnType<typeof setTimeout> | null =
+      null;
+
     let activePointerId: number | null = null;
 
     let startX = 0;
@@ -139,15 +208,17 @@ export default function ServiceMap() {
     }
 
     function handlePointerDown(event: PointerEvent) {
-      // Drugi prst ili druga aktivna interakcija
-      // otkazuju postavljanje pina.
+      // Drugi prst otkazuje postavljanje pina
       if (!event.isPrimary || activePointerId !== null) {
         cancelHold();
         return;
       }
 
-      // Na računalu samo lijeva tipka miša
-      if (event.pointerType === "mouse" && event.button !== 0) {
+      // Na desktopu samo lijeva tipka miša
+      if (
+        event.pointerType === "mouse" &&
+        event.button !== 0
+      ) {
         return;
       }
 
@@ -156,7 +227,7 @@ export default function ServiceMap() {
       startX = event.clientX;
       startY = event.clientY;
 
-      // Pamtimo mjesto na kojem je držanje počelo
+      // Mjesto na kojem je korisnik počeo držati
       const rect = canvas.getBoundingClientRect();
 
       const location = map.unproject([
@@ -168,7 +239,10 @@ export default function ServiceMap() {
         holdTimer = null;
         activePointerId = null;
 
-        placeUserMarker(location.lng, location.lat);
+        placeUserMarker(
+          location.lng,
+          location.lat
+        );
       }, 1000);
     }
 
@@ -179,11 +253,10 @@ export default function ServiceMap() {
 
       const distance = Math.hypot(
         event.clientX - startX,
-        event.clientY - startY,
+        event.clientY - startY
       );
 
-      // Ako korisnik pomiče kartu,
-      // ne želimo slučajno postaviti pin.
+      // Pomicanje karte otkazuje long press
       if (distance > 12) {
         cancelHold();
       }
@@ -199,15 +272,30 @@ export default function ServiceMap() {
       event.preventDefault();
     }
 
-    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener(
+      "pointerdown",
+      handlePointerDown
+    );
 
-    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener(
+      "pointermove",
+      handlePointerMove
+    );
 
-    window.addEventListener("pointerup", handlePointerEnd);
+    window.addEventListener(
+      "pointerup",
+      handlePointerEnd
+    );
 
-    window.addEventListener("pointercancel", handlePointerEnd);
+    window.addEventListener(
+      "pointercancel",
+      handlePointerEnd
+    );
 
-    canvas.addEventListener("contextmenu", preventContextMenu);
+    canvas.addEventListener(
+      "contextmenu",
+      preventContextMenu
+    );
 
     map.on("dragstart", cancelHold);
     map.on("zoomstart", cancelHold);
@@ -219,15 +307,37 @@ export default function ServiceMap() {
     return () => {
       cancelHold();
 
-      canvas.removeEventListener("pointerdown", handlePointerDown);
+      headerObserver.disconnect();
 
-      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener(
+        "resize",
+        positionMapInfo
+      );
 
-      window.removeEventListener("pointerup", handlePointerEnd);
+      canvas.removeEventListener(
+        "pointerdown",
+        handlePointerDown
+      );
 
-      window.removeEventListener("pointercancel", handlePointerEnd);
+      window.removeEventListener(
+        "pointermove",
+        handlePointerMove
+      );
 
-      canvas.removeEventListener("contextmenu", preventContextMenu);
+      window.removeEventListener(
+        "pointerup",
+        handlePointerEnd
+      );
+
+      window.removeEventListener(
+        "pointercancel",
+        handlePointerEnd
+      );
+
+      canvas.removeEventListener(
+        "contextmenu",
+        preventContextMenu
+      );
 
       map.off("dragstart", cancelHold);
       map.off("zoomstart", cancelHold);
@@ -235,26 +345,56 @@ export default function ServiceMap() {
       userMarkerRef.current?.remove();
       vehicleMarker.remove();
 
-      geolocateRef.current = null;
       mapRef.current = null;
 
       map.remove();
     };
   }, [placeUserMarker]);
 
-  // GPS gumb
+  // ----------------------------------------
+  // GPS — BROWSER API
+  // ----------------------------------------
+
   function handleGps() {
     setGpsError(false);
     setAddressError("");
 
-    geolocateRef.current?.trigger();
+    if (!navigator.geolocation) {
+      setGpsError(true);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        placeUserMarker(
+          position.coords.longitude,
+          position.coords.latitude
+        );
+      },
+
+      () => {
+        setGpsError(true);
+      },
+
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 0,
+      }
+    );
   }
 
-  // Ručni unos adrese
-  async function handleAddressSubmit(event: FormEvent<HTMLFormElement>) {
+  // ----------------------------------------
+  // RUČNI UNOS ADRESE
+  // ----------------------------------------
+
+  async function handleAddressSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     const query = address.trim();
+
     if (!query) return;
 
     setIsSearchingAddress(true);
@@ -262,7 +402,7 @@ export default function ServiceMap() {
 
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${locale}&q=${encodeURIComponent(query)}`,
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${locale}&q=${encodeURIComponent(query)}`
       );
 
       if (!response.ok) {
@@ -281,7 +421,10 @@ export default function ServiceMap() {
 
       const result = results[0];
 
-      placeUserMarker(Number(result.lon), Number(result.lat));
+      placeUserMarker(
+        Number(result.lon),
+        Number(result.lat)
+      );
     } catch {
       setAddressError(t("addressNotFound"));
     } finally {
@@ -289,171 +432,34 @@ export default function ServiceMap() {
     }
   }
 
+  // ----------------------------------------
+  // MAPA + LOCATION PANEL
+  // ----------------------------------------
+
   return (
     <div className="relative h-full w-full min-w-0">
-      <div ref={mapContainer} className="h-full w-full min-w-0" />
-
-      {/* Kompaktna glass traka */}
       <div
-        className="
-          absolute inset-x-0 bottom-0 z-10
-          border-y border-amber-400/50
-          bg-slate-950/25 px-3 py-1.5
-          text-white backdrop-blur-md
-          shadow-[0_-6px_24px_rgba(0,0,0,0.25)]
-        "
-      >
-        <div className="mx-auto w-full max-w-xl">
-          {/* Naslov + uputa za pin */}
-          <div
-            dir="ltr"
-            className="
-    mb-1 flex flex-col gap-0.5
-    min-[336px]:flex-row
-    min-[336px]:items-start
-    min-[336px]:justify-between
-    min-[336px]:gap-2
-  "
-          >
-            <p
-              dir={locale === "ar" ? "rtl" : "ltr"}
-              className={`
-      shrink-0 whitespace-nowrap
-      text-[10px] font-bold tracking-wide text-amber-400
-      ${locale === "ar" ? "self-end min-[336px]:order-2" : "self-start"}
-    `}
-            >
-              {t("title")}
-            </p>
+        ref={mapContainer}
+        className="h-full w-full min-w-0"
+      />
 
-            <div
-              dir="ltr"
-              className={`
-      flex min-w-0 max-w-full items-start gap-1
-      text-[11px] font-semibold leading-snug text-slate-100
-      ${
-        locale === "ar"
-          ? "self-end min-[336px]:order-1 min-[336px]:self-start"
-          : "self-start"
-      }
-    `}
-            >
-              <MapPin size={11} className="shrink-0 text-amber-400" />
-
-              <span
-                dir={locale === "ar" ? "rtl" : "ltr"}
-                className="min-w-0 whitespace-normal"
-              >
-                {t("pinHint")}
-              </span>
-            </div>
-          </div>
-
-          {addressOpen ? (
-            <form
-              onSubmit={handleAddressSubmit}
-              className="flex items-center gap-1.5"
-            >
-              <button
-                type="button"
-                onClick={() => setAddressOpen(false)}
-                aria-label={t("back")}
-                className="
-                  flex h-8 w-8 shrink-0
-                  items-center justify-center
-                  rounded-md border border-amber-500/30
-                  bg-slate-950/25
-                "
-              >
-                <ArrowLeft size={15} />
-              </button>
-
-              <input
-                type="search"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-                placeholder={t("addressPlaceholder")}
-                aria-label={t("addressPlaceholder")}
-                className="
-                  h-8 min-w-0 flex-1
-                  rounded-md border border-amber-500/30
-                  bg-slate-950/25 px-2
-                  text-base text-white
-                  placeholder:text-slate-400
-                  outline-none focus:border-amber-400
-                  sm:text-sm
-                "
-              />
-
-              <button
-                type="submit"
-                disabled={isSearchingAddress}
-                aria-label={t("useAddress")}
-                className="
-                  flex h-8 w-8 shrink-0
-                  items-center justify-center
-                  rounded-md border border-amber-500/50
-                  bg-amber-500/15 text-amber-400
-                  disabled:opacity-50
-                "
-              >
-                {isSearchingAddress ? (
-                  <span className="text-xs">...</span>
-                ) : (
-                  <Search size={16} />
-                )}
-              </button>
-            </form>
-          ) : (
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={handleGps}
-                className="
-                  flex h-8 min-w-0
-                  items-center justify-center gap-1.5
-                  rounded-md border border-cyan-500/40
-                  bg-slate-950/25 px-2
-                  text-xs font-semibold
-                  transition-colors hover:bg-cyan-500/15
-                "
-              >
-                <LocateFixed size={14} className="shrink-0 text-cyan-400" />
-
-                {t("gps")}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setAddressError("");
-                  setAddressOpen(true);
-                }}
-                className="
-                  flex h-8 min-w-0
-                  items-center justify-center gap-1.5
-                  rounded-md border border-amber-500/40
-                  bg-slate-950/25 px-2
-                  text-xs font-semibold
-                  transition-colors hover:bg-amber-500/15
-                "
-              >
-                <Keyboard size={14} className="shrink-0 text-amber-400" />
-
-                {t("useAddress")}
-              </button>
-            </div>
-          )}
-
-          {gpsError && (
-            <p className="mt-1 text-[10px] text-red-300">{t("gpsError")}</p>
-          )}
-
-          {addressError && (
-            <p className="mt-1 text-[10px] text-red-300">{addressError}</p>
-          )}
-        </div>
-      </div>
+      <LocationPanel
+        addressOpen={addressOpen}
+        address={address}
+        isSearchingAddress={isSearchingAddress}
+        addressError={addressError}
+        gpsError={gpsError}
+        onGpsClick={handleGps}
+        onAddressOpen={() => {
+          setAddressError("");
+          setAddressOpen(true);
+        }}
+        onAddressClose={() => {
+          setAddressOpen(false);
+        }}
+        onAddressChange={setAddress}
+        onAddressSubmit={handleAddressSubmit}
+      />
     </div>
   );
 }
