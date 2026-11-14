@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -63,11 +62,21 @@ export default function LanguageSelector() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const selectedFlag =
-    flags.find((flag) => flag.locale === locale) ?? flags[0];
+  // Ako je korisnik ručno promijenio jezik,
+  // zadrži zastavice mirnima tijekom promjene rute.
+  useEffect(() => {
+    if (sessionStorage.getItem("skipFlagAnimation") !== "true") {
+      return;
+    }
 
-  const languageLabel =
-    languageLabels[locale as Locale] ?? languageLabels.de;
+    document.documentElement.dataset.skipFlagAnimation = "true";
+
+    sessionStorage.removeItem("skipFlagAnimation");
+  }, [locale]);
+
+  const selectedFlag = flags.find((flag) => flag.locale === locale) ?? flags[0];
+
+  const languageLabel = languageLabels[locale as Locale] ?? languageLabels.de;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -100,6 +109,11 @@ export default function LanguageSelector() {
     setIsOpen(false);
 
     if (nextLocale === locale) return;
+
+    // Zaustavi slot-machine animaciju zastavica.
+    sessionStorage.setItem("skipFlagAnimation", "true");
+
+    document.documentElement.setAttribute("data-skip-flag-animation", "true");
 
     router.replace(pathname, {
       locale: nextLocale,
@@ -147,7 +161,7 @@ export default function LanguageSelector() {
             />
           </div>
 
-          {/* Tvoja postojeća slot-machine animacija */}
+          {/* Postojeća slot-machine animacija */}
           <div
             aria-hidden="true"
             className="

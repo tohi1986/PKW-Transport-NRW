@@ -1,4 +1,3 @@
-
 {
   "Navbar": {
     "services": "Leistungen",
@@ -6,10 +5,21 @@
     "navigationLabel": "Hauptnavigation"
   },
   "Layout": {
-  "liveTracking": "LIVE-FAHRZEUGTRACKING"
-},
-"Metadata": {
-  "title": "PKW Transport NRW | Abschleppdienst bis 3,5 t",
-  "description": "PKW Transport NRW – Abschleppdienst, Pannenhilfe und Fahrzeugtransport bis 3,5 t in Nordrhein-Westfalen."
-}
+    "liveTracking": "LIVE-FAHRZEUGTRACKING"
+  },
+  "Metadata": {
+    "title": "PKW Transport NRW | Abschleppdienst bis 3,5 t",
+    "description": "PKW Transport NRW – Abschleppdienst, Pannenhilfe und Fahrzeugtransport bis 3,5 t in Nordrhein-Westfalen."
+  },
+
+  "Map": {
+    "title": "IHR STANDORT",
+    "gps": "GPS nutzen",
+    "pinHint": "Karte 1 Sek. halten, um Pin zu setzen",
+    "back": "Zurück",
+    "addressPlaceholder": "Adresse eingeben...",
+    "useAddress": "Adresse",
+    "addressNotFound": "Adresse nicht gefunden.",
+    "gpsError": "Standort konnte nicht ermittelt werden."
+  }
 }

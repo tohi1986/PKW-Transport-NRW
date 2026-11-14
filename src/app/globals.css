@@ -159,27 +159,90 @@ body {
   color: #ffffff;
 }
 
-/* MapLibre Attribution */
 
+
+/* MapLibre Attribution — compact amber glass */
+
+/* Poziciju ispod Navbara računa ServiceMap.tsx */
+.maplibregl-ctrl-top-left {
+  left: 8px;
+}
+
+/* Tamni glass izgled, dovoljno specifičan da
+   nadjača originalnu MapLibre bijelu pozadinu */
+.maplibregl-map .maplibregl-ctrl-top-left
 .maplibregl-ctrl-attrib {
-  background-color: rgba(0, 0, 0, 0.4) !important;
-  color: #475569 !important;
-  font-size: 6px !important;
-  padding: 1px 3px !important;
-  border-radius: 2px;
-  backdrop-filter: blur(2px);
-  border: 1px solid rgba(245, 158, 11, 0.1);
+  background-color: rgba(2, 6, 23, 0.9);
+  color: #e2e8f0;
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  border-radius: 7px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+  font-size: 10px;
+  margin: 0;
 }
 
+/* Zatvoren: samo mali info gumb */
+.maplibregl-map .maplibregl-ctrl-top-left
+.maplibregl-ctrl-attrib.maplibregl-compact:not(.maplibregl-compact-show) {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Otvoren: ostavlja prostor za info ikonicu */
+.maplibregl-map .maplibregl-ctrl-top-left
+.maplibregl-ctrl-attrib.maplibregl-compact-show {
+  max-width: calc(100vw - 24px);
+  padding: 2px 8px 2px 30px;
+  box-sizing: border-box;
+}
+
+/* Mali crni MapLibre info gumb */
+.maplibregl-map .maplibregl-ctrl-top-left
+.maplibregl-ctrl-attrib .maplibregl-ctrl-attrib-button {
+  width: 18px;
+  height: 18px;
+  top: 0;
+  left: 0;
+  right: auto;
+
+  background-color: #020617;
+  background-image: none;
+
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Svijetla info ikonica */
+.maplibregl-map .maplibregl-ctrl-top-left
+.maplibregl-ctrl-attrib .maplibregl-ctrl-attrib-button::after {
+  content: "i";
+  color: #f9ab02;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: Arial, sans-serif;
+  font-style: normal;
+  line-height: 1;
+}
+
+/* Boje poveznica */
+.maplibregl-map .maplibregl-ctrl-top-left
 .maplibregl-ctrl-attrib a {
-  color: #64748b !important;
-  text-decoration: none;
+  color: #fbbf24;
 }
 
+.maplibregl-map .maplibregl-ctrl-top-left
 .maplibregl-ctrl-attrib a:hover {
-  color: #f59e0b !important;
+  color: #fde68a;
   text-decoration: underline;
 }
+
+
 
 /* Reduced Motion Accessibility */
 
@@ -225,4 +288,26 @@ html[data-animation-stage="flags"] .language-selected {
 
 html[data-animation-stage="flags"] .language-reel {
   opacity: 1;
+}
+
+
+
+/* Zaustavi animaciju zastavica nakon ručne promjene jezika */
+html[data-skip-flag-animation="true"] .language-reel {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
+html[data-skip-flag-animation="true"] .language-selected {
+  opacity: 1 !important;
+}
+
+
+
+
+/* Spriječi prelijevanje sjaja linkova na mobitelu */
+@media (max-width: 639px) {
+  .amber-letter-anim span {
+    text-shadow: none !important;
+  }
 }
