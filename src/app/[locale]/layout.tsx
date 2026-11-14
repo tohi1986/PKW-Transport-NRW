@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import "../globals.css";
 
@@ -62,8 +61,7 @@ export async function generateMetadata({
   const siteUrl = process.env.SITE_URL?.replace(/\/+$/, "");
 
   // Njemački koristi /, ostali jezici /en, /tr...
-  const pathname =
-    locale === routing.defaultLocale ? "/" : `/${locale}`;
+  const pathname = locale === routing.defaultLocale ? "/" : `/${locale}`;
 
   return {
     title: t("title"),
@@ -89,10 +87,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function RootLayout({
-  children,
-  params,
-}: LayoutProps) {
+export default async function RootLayout({ children, params }: LayoutProps) {
   const { locale } = await params;
 
   if (!hasLocale(routing.locales, locale)) {
@@ -111,15 +106,20 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider>
           <AnimationController>
-            <main className="relative z-0 w-full min-h-dvh">
-              {children}
-            </main>
+            <main className="relative z-0 w-full min-h-dvh">{children}</main>
 
             <div className="absolute inset-x-0 top-0 z-50 flex flex-col pointer-events-none">
-              <div className="pointer-events-auto">
+              <div id="map-header" className="pointer-events-auto">
                 <Navbar />
 
-                <section className="flex items-center justify-between border-y border-amber-400/50 bg-slate-950/25 px-5 backdrop-blur-md">
+                <section
+                  className="
+                  flex items-center justify-between
+                  border-b border-amber-400/55
+                  bg-slate-950/25 px-5 py-0.5 backdrop-blur-md
+                  shadow-[inset_0_1px_0_rgba(251,191,36,0.14),0_0_12px_rgba(245,158,11,0.12)]
+                "
+                >
                   <span className="text-[9px] font-bold tracking-widest text-amber-500">
                     24/7 &nbsp;&nbsp;&nbsp; ESSEN
                   </span>

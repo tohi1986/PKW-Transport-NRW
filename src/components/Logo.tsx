@@ -6,7 +6,7 @@ export default function Logo() {
     <Link
       href="/"
       aria-label="PKW Transport NRW Startseite"
-      className="shrink-0"
+      className="relative z-10 shrink-0"
     >
       <Image
         src="/images/Logo01.png"

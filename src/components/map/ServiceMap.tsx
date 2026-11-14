@@ -1,7 +1,4 @@
-
 "use client";
-
-import { createUserPin } from "./createUserPin";
 
 import {
   useCallback,
@@ -13,19 +10,69 @@ import {
 
 import { useLocale, useTranslations } from "next-intl";
 
-import {
-  Map,
-  Marker,
-  AttributionControl,
-  setWorkerUrl,
-} from "maplibre-gl";
+import { Map, Marker, setWorkerUrl } from "maplibre-gl";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
 import { createVehiclePin } from "./createVehiclePin";
+import { createUserPin } from "./createUserPin";
+import { setupMapLongPress } from "./mapLongPress";
+import { setupMapAttribution } from "./mapAttribution";
 import LocationPanel from "./LocationPanel";
 
 setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
+
+const MAP_STORAGE_KEY = "pkw-service-map-state";
+
+type SavedMapState = {
+  center: [number, number];
+  zoom: number;
+  userPin: [number, number] | null;
+};
+
+function readMapState(): SavedMapState | null {
+  try {
+    const stored = sessionStorage.getItem(MAP_STORAGE_KEY);
+
+    if (!stored) return null;
+
+    const state: SavedMapState = JSON.parse(stored);
+
+    if (
+      !Array.isArray(state.center) ||
+      state.center.length !== 2 ||
+      !state.center.every(Number.isFinite) ||
+      !Number.isFinite(state.zoom) ||
+      (state.userPin !== null &&
+        (!Array.isArray(state.userPin) ||
+          state.userPin.length !== 2 ||
+          !state.userPin.every(Number.isFinite)))
+    ) {
+      return null;
+    }
+
+    return state;
+  } catch {
+    return null;
+  }
+}
+
+function saveMapState(map: Map, userMarker: Marker | null) {
+  const center = map.getCenter();
+  const pin = userMarker?.getLngLat();
+
+  const state: SavedMapState = {
+    center: [center.lng, center.lat],
+    zoom: map.getZoom(),
+    userPin: pin ? [pin.lng, pin.lat] : null,
+  };
+
+  try {
+    sessionStorage.setItem(MAP_STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Ako browser blokira storage, karta i dalje radi.
+  }
+}
 
 export default function ServiceMap() {
   const t = useTranslations("Map");
@@ -37,18 +84,16 @@ export default function ServiceMap() {
 
   const [addressOpen, setAddressOpen] = useState(false);
   const [address, setAddress] = useState("");
-  const [isSearchingAddress, setIsSearchingAddress] =
-    useState(false);
+  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
 
   const [addressError, setAddressError] = useState("");
   const [gpsError, setGpsError] = useState(false);
 
   // ----------------------------------------
- // KORISNIKOV PIN
-// ----------------------------------------
+  // KORISNIKOV PIN
+  // ----------------------------------------
 
-const placeUserMarker = useCallback(
-  (lng: number, lat: number) => {
+  const placeUserMarker = useCallback((lng: number, lat: number) => {
     const map = mapRef.current;
 
     if (!map) return;
@@ -56,27 +101,27 @@ const placeUserMarker = useCallback(
     // Ukloni prethodni korisnikov pin
     userMarkerRef.current?.remove();
 
-    // Postavi novi amber pin s cijan sredinom
+    // Postavi amber pin s cijan sredinom
     userMarkerRef.current = new Marker({
       element: createUserPin(),
       anchor: "bottom",
     })
       .setLngLat([lng, lat])
       .addTo(map);
+    // Zapamti korisnikov pin
+    saveMapState(map, userMarkerRef.current);
 
-      // Centriraj kartu na odabranu lokaciju
-      map.flyTo({
-        center: [lng, lat],
-        zoom: 14,
-        essential: true,
-      });
+    // Centriraj kartu na odabranu lokaciju
+    map.flyTo({
+      center: [lng, lat],
+      zoom: 14,
+      essential: true,
+    });
 
-      setGpsError(false);
-      setAddressError("");
-      setAddressOpen(false);
-    },
-    []
-  );
+    setGpsError(false);
+    setAddressError("");
+    setAddressOpen(false);
+  }, []);
 
   // ----------------------------------------
   // INICIJALIZACIJA KARTE
@@ -85,10 +130,12 @@ const placeUserMarker = useCallback(
   useEffect(() => {
     if (!mapContainer.current) return;
 
+    const savedState = readMapState();
+
     const map = new Map({
       container: mapContainer.current,
-      center: [7.0116, 51.4556],
-      zoom: 13,
+      center: savedState?.center ?? [7.0116, 51.4556],
+      zoom: savedState?.zoom ?? 13,
       minZoom: 8,
       maxZoom: 18,
       style: "/stamen.json",
@@ -97,77 +144,25 @@ const placeUserMarker = useCallback(
 
     mapRef.current = map;
 
-    // ----------------------------------------
-    // MAPLIBRE ATRIBUCIJA
-    // ----------------------------------------
-
-    map.addControl(
-      new AttributionControl({ compact: true }),
-      "top-left"
-    );
-
-    // Zatvori compact atribuciju pri učitavanju
-    map.once("load", () => {
-      const attribution = map
-        .getContainer()
-        .querySelector<HTMLElement>(
-          ".maplibregl-ctrl-top-left .maplibregl-ctrl-attrib"
-        );
-
-      if (!attribution) return;
-
-      attribution.classList.remove(
-        "maplibregl-compact-show"
-      );
-
-      attribution.removeAttribute("open");
-    });
-
-    // Pronađi naš header
-    const header = document.getElementById("map-header");
-
-    const infoCorner = map
-      .getContainer()
-      .querySelector<HTMLElement>(
-        ".maplibregl-ctrl-top-left"
-      );
-
-    function positionMapInfo() {
-      if (!header || !infoCorner) return;
-
-      const headerBottom =
-        header.getBoundingClientRect().bottom;
-
-      const mapTop =
-        map.getContainer().getBoundingClientRect().top;
-
-      const offset = Math.max(
-        8,
-        headerBottom - mapTop + 8
-      );
-
-      infoCorner.style.setProperty(
-        "top",
-        `${offset}px`,
-        "important"
-      );
+    // Vrati korisnikov pin nakon promjene jezika
+    if (savedState?.userPin) {
+      userMarkerRef.current = new Marker({
+        element: createUserPin(),
+        anchor: "bottom",
+      })
+        .setLngLat(savedState.userPin)
+        .addTo(map);
     }
 
-    positionMapInfo();
-
-    // Prati promjene visine Navbara
-    const headerObserver = new ResizeObserver(
-      positionMapInfo
-    );
-
-    if (header) {
-      headerObserver.observe(header);
+    // Zapamti centar i zoom nakon pomicanja karte
+    function handleMapMoveEnd() {
+      saveMapState(map, userMarkerRef.current);
     }
 
-    window.addEventListener(
-      "resize",
-      positionMapInfo
-    );
+    map.on("moveend", handleMapMoveEnd);
+
+    // MapLibre atribucija ispod Navbara
+    const cleanupAttribution = setupMapAttribution(map);
 
     // ----------------------------------------
     // POSTOJEĆI PIN ŠLEP-VOZILA
@@ -184,163 +179,19 @@ const placeUserMarker = useCallback(
       .setLngLat([7.0116, 51.4556])
       .addTo(map);
 
-    // ----------------------------------------
-    // LONG PRESS — 1 SEKUNDA
-    // ----------------------------------------
-
-    const canvas = map.getCanvas();
-
-    let holdTimer: ReturnType<typeof setTimeout> | null =
-      null;
-
-    let activePointerId: number | null = null;
-
-    let startX = 0;
-    let startY = 0;
-
-    function cancelHold() {
-      if (holdTimer !== null) {
-        clearTimeout(holdTimer);
-        holdTimer = null;
-      }
-
-      activePointerId = null;
-    }
-
-    function handlePointerDown(event: PointerEvent) {
-      // Drugi prst otkazuje postavljanje pina
-      if (!event.isPrimary || activePointerId !== null) {
-        cancelHold();
-        return;
-      }
-
-      // Na desktopu samo lijeva tipka miša
-      if (
-        event.pointerType === "mouse" &&
-        event.button !== 0
-      ) {
-        return;
-      }
-
-      activePointerId = event.pointerId;
-
-      startX = event.clientX;
-      startY = event.clientY;
-
-      // Mjesto na kojem je korisnik počeo držati
-      const rect = canvas.getBoundingClientRect();
-
-      const location = map.unproject([
-        event.clientX - rect.left,
-        event.clientY - rect.top,
-      ]);
-
-      holdTimer = setTimeout(() => {
-        holdTimer = null;
-        activePointerId = null;
-
-        placeUserMarker(
-          location.lng,
-          location.lat
-        );
-      }, 1000);
-    }
-
-    function handlePointerMove(event: PointerEvent) {
-      if (event.pointerId !== activePointerId) {
-        return;
-      }
-
-      const distance = Math.hypot(
-        event.clientX - startX,
-        event.clientY - startY
-      );
-
-      // Pomicanje karte otkazuje long press
-      if (distance > 12) {
-        cancelHold();
-      }
-    }
-
-    function handlePointerEnd(event: PointerEvent) {
-      if (event.pointerId === activePointerId) {
-        cancelHold();
-      }
-    }
-
-    function preventContextMenu(event: MouseEvent) {
-      event.preventDefault();
-    }
-
-    canvas.addEventListener(
-      "pointerdown",
-      handlePointerDown
-    );
-
-    window.addEventListener(
-      "pointermove",
-      handlePointerMove
-    );
-
-    window.addEventListener(
-      "pointerup",
-      handlePointerEnd
-    );
-
-    window.addEventListener(
-      "pointercancel",
-      handlePointerEnd
-    );
-
-    canvas.addEventListener(
-      "contextmenu",
-      preventContextMenu
-    );
-
-    map.on("dragstart", cancelHold);
-    map.on("zoomstart", cancelHold);
+    // Long press od 1 sekunde
+    const cleanupLongPress = setupMapLongPress(map, placeUserMarker);
 
     // ----------------------------------------
     // CLEANUP
     // ----------------------------------------
 
     return () => {
-      cancelHold();
+      saveMapState(map, userMarkerRef.current);
 
-      headerObserver.disconnect();
-
-      window.removeEventListener(
-        "resize",
-        positionMapInfo
-      );
-
-      canvas.removeEventListener(
-        "pointerdown",
-        handlePointerDown
-      );
-
-      window.removeEventListener(
-        "pointermove",
-        handlePointerMove
-      );
-
-      window.removeEventListener(
-        "pointerup",
-        handlePointerEnd
-      );
-
-      window.removeEventListener(
-        "pointercancel",
-        handlePointerEnd
-      );
-
-      canvas.removeEventListener(
-        "contextmenu",
-        preventContextMenu
-      );
-
-      map.off("dragstart", cancelHold);
-      map.off("zoomstart", cancelHold);
+      map.off("moveend", handleMapMoveEnd);
+      cleanupLongPress();
+      cleanupAttribution();
 
       userMarkerRef.current?.remove();
       vehicleMarker.remove();
@@ -366,10 +217,7 @@ const placeUserMarker = useCallback(
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        placeUserMarker(
-          position.coords.longitude,
-          position.coords.latitude
-        );
+        placeUserMarker(position.coords.longitude, position.coords.latitude);
       },
 
       () => {
@@ -380,7 +228,7 @@ const placeUserMarker = useCallback(
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 0,
-      }
+      },
     );
   }
 
@@ -388,9 +236,7 @@ const placeUserMarker = useCallback(
   // RUČNI UNOS ADRESE
   // ----------------------------------------
 
-  async function handleAddressSubmit(
-    event: FormEvent<HTMLFormElement>
-  ) {
+  async function handleAddressSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const query = address.trim();
@@ -402,7 +248,7 @@ const placeUserMarker = useCallback(
 
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${locale}&q=${encodeURIComponent(query)}`
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=${locale}&q=${encodeURIComponent(query)}`,
       );
 
       if (!response.ok) {
@@ -421,10 +267,7 @@ const placeUserMarker = useCallback(
 
       const result = results[0];
 
-      placeUserMarker(
-        Number(result.lon),
-        Number(result.lat)
-      );
+      placeUserMarker(Number(result.lon), Number(result.lat));
     } catch {
       setAddressError(t("addressNotFound"));
     } finally {
@@ -438,10 +281,7 @@ const placeUserMarker = useCallback(
 
   return (
     <div className="relative h-full w-full min-w-0">
-      <div
-        ref={mapContainer}
-        className="h-full w-full min-w-0"
-      />
+      <div ref={mapContainer} className="h-full w-full min-w-0" />
 
       <LocationPanel
         addressOpen={addressOpen}
