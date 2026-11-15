@@ -21,5 +21,12 @@
     "useAddress": "Adres",
     "addressNotFound": "Adres bulunamadı.",
     "gpsError": "Konumunuz belirlenemedi."
+  },
+
+  "Hero": {
+    "heading": "Essen Çekici Hizmeti",
+    "slogan1": "Aracınız durunca biz yola çıkarız!",
+    "slogan2": "Siz arayın. Biz gelelim.",
+    "slogan3": "Siz durunca biz devreye gireriz."
   }
 }

@@ -21,5 +21,12 @@
     "useAddress": "Adres",
     "addressNotFound": "Nie znaleziono adresu.",
     "gpsError": "Nie udało się ustalić lokalizacji."
+  },
+
+  "Hero": {
+    "heading": "Pomoc drogowa w Essen",
+    "slogan1": "Gdy auto staje, my ruszamy!",
+    "slogan2": "Ty dzwonisz. My przyjeżdżamy.",
+    "slogan3": "Tam, gdzie stajesz, my pomagamy."
   }
 }

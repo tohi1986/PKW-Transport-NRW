@@ -1,0 +1,41 @@
+
+@keyframes sloganCycle {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  4%, 28% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  33.333%, 100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.slogan {
+  opacity: 0;
+  animation: sloganCycle 15s ease-in-out infinite;
+}
+
+.slogan:nth-child(2) {
+  animation-delay: 5s;
+}
+
+.slogan:nth-child(3) {
+  animation-delay: 10s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slogan {
+    animation: none;
+    transform: none;
+  }
+
+  .slogan:first-child {
+    opacity: 1;
+  }
+}

@@ -21,5 +21,12 @@
     "useAddress": "Address",
     "addressNotFound": "Address not found.",
     "gpsError": "Could not determine your location."
+  },
+
+  "Hero": {
+    "heading": "Towing Service in Essen",
+    "slogan1": "When your car stops, we get moving!",
+    "slogan2": "You call. We arrive.",
+    "slogan3": "Where you stop, we help you move on."
   }
 }
