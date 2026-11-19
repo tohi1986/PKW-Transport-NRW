@@ -73,6 +73,13 @@ ci:         CI/CD promjene (GitHub Actions itd.)
 revert:     vraćanje prethodnog commita
 ```
 
+
+#  description profesionalan
+    Summary — što smo napravili.
+    Testing — koje provjere smo izvršili.
+    Notes — što nije dio ovog PR-a.
+
+
 ---
 
 # NEXT.JS OSNOVE
