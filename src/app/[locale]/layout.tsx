@@ -108,7 +108,7 @@ export default async function RootLayout({ children, params }: LayoutProps) {
           <AnimationController>
             <main className="relative z-0 w-full min-h-dvh">{children}</main>
 
-            <div className="absolute inset-x-0 top-0 z-50 flex flex-col pointer-events-none">
+            <div className="fixed inset-x-0 top-0 z-50 flex flex-col pointer-events-none">
               <div id="map-header" className="pointer-events-auto">
                 <Navbar />
 

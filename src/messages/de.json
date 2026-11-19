@@ -21,5 +21,13 @@
     "useAddress": "Adresse",
     "addressNotFound": "Adresse nicht gefunden.",
     "gpsError": "Standort konnte nicht ermittelt werden."
+  },
+
+  "Hero": {
+    "heading": "Abschleppdienst in Essen",
+    "slogan1": "Wenn das Auto stehen bleibt, fahren wir los!",
+    "slogan2": "Sie rufen. Wir kommen.",
+    "slogan3": "Wo Sie stehen bleiben, helfen wir weiter.",
+    "mapHint": "NUTZEN SIE UNSERE LIVE-KARTE, UM ZU SEHEN, WIE SCHNELL WIR BEI IHNEN SIND."
   }
 }
