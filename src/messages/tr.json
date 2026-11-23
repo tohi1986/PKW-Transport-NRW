@@ -29,5 +29,32 @@
     "slogan2": "Siz arayın. Biz gelelim.",
     "slogan3": "Siz durunca biz devreye gireriz.",
     "mapHint": "SİZE NE KADAR HIZLI ULAŞABİLECEĞİMİZİ GÖRMEK İÇİN CANLI HARİTAMIZI KULLANIN."
+  },
+
+"Services": {
+  "eyebrow": "SUNDUĞUMUZ HİZMETLER",
+  "heading": "Hizmetlerimiz",
+  "cards": {
+    "germanyEu": {
+      "title": "Almanya ve AB'de Araç Taşıma",
+      "description": "Essen merkezli olarak şehir içinde, Almanya genelinde ve Avrupa Birliği ülkelerinde araç taşıma hizmeti sunuyoruz.",
+      "highlight": "ESSEN'DEN AVRUPA'YA"
+    },
+    "mechanic": {
+      "title": "Çağrı Üzerine Tamirci",
+      "description": "Yolda aracınız için teknik yardıma ihtiyaç duyduğunuzda destek sağlıyoruz.",
+      "highlight": "İHTİYACINIZ OLDUĞUNDA YANINIZDAYIZ"
+    },
+    "transport": {
+      "title": "Araç Taşıma",
+      "description": "Uygun bir römorkla 3,5 tona kadar araçların güvenilir şekilde taşınması.",
+      "highlight": "3,5 TONA KADAR"
+    },
+    "experience": {
+      "title": "Deneyim ve Çok Yönlülük",
+      "description": "Farklı araç türlerini özenle taşıma konusunda uzun yıllara dayanan deneyim.",
+      "highlight": "GÜVENEBİLECEĞİNİZ DENEYİM"
+    }
   }
+}
 }

@@ -29,5 +29,32 @@
     "slogan2": "Ty dzwonisz. My przyjeżdżamy.",
     "slogan3": "Tam, gdzie stajesz, my pomagamy.",
     "mapHint": "SKORZYSTAJ Z NASZEJ MAPY NA ŻYWO, ABY SPRAWDZIĆ, JAK SZYBKO DO CIEBIE DOTRZEMY."
+  },
+
+"Services": {
+  "eyebrow": "NASZA OFERTA",
+  "heading": "Nasze usługi",
+  "cards": {
+    "germanyEu": {
+      "title": "Transport w Niemczech i UE",
+      "description": "Z siedzibą w Essen realizujemy transport pojazdów lokalnie, na terenie całych Niemiec i Unii Europejskiej.",
+      "highlight": "Z ESSEN DO CAŁEJ EUROPY"
+    },
+    "mechanic": {
+      "title": "Mechanik na wezwanie",
+      "description": "Pomoc techniczna, gdy potrzebujesz wsparcia z pojazdem w trasie.",
+      "highlight": "POMOC, GDY JEJ POTRZEBUJESZ"
+    },
+    "transport": {
+      "title": "Transport pojazdów",
+      "description": "Niezawodny transport pojazdów o masie do 3,5 tony na odpowiedniej przyczepie.",
+      "highlight": "DO 3,5 TONY"
+    },
+    "experience": {
+      "title": "Doświadczenie i wszechstronność",
+      "description": "Wieloletnie doświadczenie w starannym transporcie różnych typów pojazdów.",
+      "highlight": "DOŚWIADCZENIE, KTÓREMU MOŻESZ ZAUFAĆ"
+    }
   }
+}
 }

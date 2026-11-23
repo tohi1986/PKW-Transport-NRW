@@ -29,5 +29,32 @@
     "slogan2": "You call. We arrive.",
     "slogan3": "Where you stop, we help you move on.",
     "mapHint": "USE OUR LIVE MAP TO SEE HOW QUICKLY WE CAN GET TO YOU."
+  },
+
+"Services": {
+  "eyebrow": "WHAT WE OFFER",
+  "heading": "Our Services",
+  "cards": {
+    "germanyEu": {
+      "title": "Germany & EU Transport",
+      "description": "Based in Essen, we provide vehicle transport locally, throughout Germany and across the EU.",
+      "highlight": "FROM ESSEN TO EUROPE"
+    },
+    "mechanic": {
+      "title": "On-Call Mechanic",
+      "description": "Technical assistance when you need help with your vehicle on the road.",
+      "highlight": "HELP WHEN YOU NEED IT"
+    },
+    "transport": {
+      "title": "Vehicle Transport",
+      "description": "Reliable transportation of vehicles up to 3.5 tonnes using a dedicated trailer.",
+      "highlight": "UP TO 3.5 TONNES"
+    },
+    "experience": {
+      "title": "Experience & Versatility",
+      "description": "Years of experience transporting different types of vehicles with care and attention.",
+      "highlight": "EXPERIENCE YOU CAN TRUST"
+    }
   }
+}
 }
