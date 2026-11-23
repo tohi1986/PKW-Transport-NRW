@@ -29,5 +29,32 @@
     "slogan2": "Sie rufen. Wir kommen.",
     "slogan3": "Wo Sie stehen bleiben, helfen wir weiter.",
     "mapHint": "NUTZEN SIE UNSERE LIVE-KARTE, UM ZU SEHEN, WIE SCHNELL WIR BEI IHNEN SIND."
+  },
+
+"Services": {
+  "eyebrow": "UNSERE LEISTUNGEN",
+  "heading": "Unsere Leistungen",
+  "cards": {
+    "germanyEu": {
+      "title": "Transport in Deutschland & der EU",
+      "description": "Von Essen aus transportieren wir Fahrzeuge vor Ort, deutschlandweit und in der gesamten EU.",
+      "highlight": "VON ESSEN DURCH EUROPA"
+    },
+    "mechanic": {
+      "title": "Mechaniker im Notdienst",
+      "description": "Technische Hilfe, wenn Sie unterwegs Unterstützung für Ihr Fahrzeug benötigen.",
+      "highlight": "HILFE, WENN SIE SIE BRAUCHEN"
+    },
+    "transport": {
+      "title": "Fahrzeugtransport",
+      "description": "Zuverlässiger Transport von Fahrzeugen bis 3,5 Tonnen mit einem geeigneten Anhänger.",
+      "highlight": "BIS 3,5 TONNEN"
+    },
+    "experience": {
+      "title": "Erfahrung & Vielseitigkeit",
+      "description": "Langjährige Erfahrung beim sorgfältigen Transport verschiedenster Fahrzeugarten.",
+      "highlight": "ERFAHRUNG, AUF DIE SIE ZÄHLEN KÖNNEN"
+    }
   }
+}
 }

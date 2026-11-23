@@ -1,10 +1,12 @@
-
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import ServiceCard from "./ServiceCard";
-import ServicesReveal from "./ServicesReveal";
+import ServicesReveal    from "./ServicesReveal";
 import { services } from "./services.data";
 
 export default function Services() {
+    const t = useTranslations("Services");
+
   return (
     <section
       id="services"
@@ -22,14 +24,14 @@ export default function Services() {
           className="translate-y-10 opacity-0 blur-sm transition-all duration-1000 delay-100 ease-out data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 data-[visible=true]:blur-none motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:blur-none"
         >
           <p className="mb-4 text-xs font-bold tracking-[0.3em] text-amber-400 md:text-sm">
-            WHAT WE OFFER
+            {t("eyebrow")}
           </p>
 
           <h2
             id="services-heading"
             className="text-5xl font-extrabold tracking-tight md:text-7xl lg:text-8xl"
           >
-            Our Services
+            {t("heading")}
           </h2>
 
           <div className="mx-auto mt-6 h-0.5 w-24 rounded-full bg-amber-400 shadow-[0_0_18px_#f59e0b]" />

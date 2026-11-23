@@ -1,4 +1,4 @@
-
+import { useTranslations } from "next-intl";
 import type { ServiceItem } from "./services.data";
 
 type ServiceCardProps = {
@@ -10,6 +10,7 @@ export default function ServiceCard({
   service,
   index,
 }: ServiceCardProps) {
+  const t = useTranslations("Services");
   const Icon = service.icon;
   const revealDelay = `${index * 180}ms`;
 
@@ -116,12 +117,12 @@ export default function ServiceCard({
                 md:text-[27px]
               "
             >
-              {service.title}
+              {t(`cards.${service.translationKey}.title`)}
             </h3>
 
             {/* DESCRIPTION - AMBER */}
             <p className="mb-6 flex-1 text-sm leading-relaxed text-amber-400 font-bold drop-shadow-md">
-              {service.description}
+              {t(`cards.${service.translationKey}.description`)}
             </p>
 
             {/* AMBER LINE */}
@@ -129,7 +130,7 @@ export default function ServiceCard({
 
             {/* HIGHLIGHT - CYAN */}
             <p className="text-xs font-bold tracking-wide text-cyan-400">
-              {service.highlight}
+              {t(`cards.${service.translationKey}.highlight`)}
             </p>
           </div>
         </div>
