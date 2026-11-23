@@ -15,6 +15,7 @@ export default function Hero() {
       <Image
         src="/images/hero.png"
         alt=""
+        loading="eager"
         fill
         sizes="100vw"
         className="object-cover object-bottom scale-[1.4] origin-bottom md:scale-100 md:object-center"
