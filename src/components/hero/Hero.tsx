@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="relative h-[40svh] min-h-65 w-full overflow-hidden md:h-[60svh]"
+      className="relative h-[40svh] min-h-65 w-full overflow-hidden md:h-[45svh]"
     >
       <Image
         src="/images/hero.png"
@@ -18,7 +18,7 @@ export default function Hero() {
         loading="eager"
         fill
         sizes="100vw"
-        className="object-cover object-bottom scale-[1.4] origin-bottom md:scale-100 md:object-center"
+        className="object-cover object-bottom scale-[1.4] origin-bottom md:scale-100 md:object-[center_70%]"
       />
 
       {/* Dark overlay for readable text */}

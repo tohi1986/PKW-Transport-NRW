@@ -1,7 +1,7 @@
 
-import Logo from "@/components/Logo";
+import Logo from "./Logo";
 import Link from "next/link";
-import LanguageSelector from "@/components/LanguageSelector";
+import LanguageSelector from "./LanguageSelector";
 import { useTranslations, useLocale } from "next-intl";
 
 export default function Navbar() {

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "../globals.css";
 
-import Navbar from "@/components/Navbar";
-import CallButton from "@/components/CallButton";
-import AnimationController from "@/components/AnimationController";
+import Navbar from "@/components/header/Navbar";
+import CallButton from "@/components/header/CallButton";
+import AnimationController from "@/components/header/AnimationController";
 import { getTranslations } from "next-intl/server";
 import localFont from "next/font/local";
 

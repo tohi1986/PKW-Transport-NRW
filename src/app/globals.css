@@ -311,3 +311,129 @@ html[data-skip-flag-animation="true"] .language-selected {
     text-shadow: none !important;
   }
 }
+
+
+
+/* Call Button - Ringing Handset */
+
+@keyframes callPhoneBuzz {
+  0%, 58%, 66%, 100% {
+    transform: translateX(0) rotate(0deg) scale(1);
+  }
+
+  59% {
+    transform: translateX(-2px) rotate(-12deg) scale(1.16);
+  }
+
+  60% {
+    transform: translateX(2px) rotate(12deg) scale(1.16);
+  }
+
+  61% {
+    transform: translateX(-2px) rotate(-11deg) scale(1.16);
+  }
+
+  62% {
+    transform: translateX(2px) rotate(11deg) scale(1.14);
+  }
+
+  63% {
+    transform: translateX(-1.5px) rotate(-8deg) scale(1.12);
+  }
+
+  64% {
+    transform: translateX(1.5px) rotate(8deg) scale(1.08);
+  }
+
+  65% {
+    transform: translateX(0) rotate(0deg) scale(1.03);
+  }
+}
+
+.call-phone-buzz {
+  animation: callPhoneBuzz 10s linear 0.3s infinite both;
+}
+
+/* Cyan vibration lines */
+
+.call-ring-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  animation: callRingLines 10s linear 0.3s infinite both;
+}
+
+.call-ring-lines span {
+  position: absolute;
+  width: 7px;
+  height: 1px;
+  border-radius: 999px;
+  background: #22d3ee;
+  box-shadow: 0 0 5px rgba(34, 211, 238, 0.8);
+}
+
+/* Left lines */
+
+.call-ring-left-top {
+  left: -5px;
+  top: 3px;
+  transform: rotate(35deg);
+}
+
+.call-ring-left-middle {
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.call-ring-left-bottom {
+  left: -5px;
+  bottom: 3px;
+  transform: rotate(-35deg);
+}
+
+/* Right lines */
+
+.call-ring-right-top {
+  right: -5px;
+  top: 3px;
+  transform: rotate(-35deg);
+}
+
+.call-ring-right-middle {
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.call-ring-right-bottom {
+  right: -5px;
+  bottom: 3px;
+  transform: rotate(35deg);
+}
+
+/* Show lines during vibration */
+
+@keyframes callRingLines {
+  0%, 58%, 65%, 100% {
+    opacity: 0;
+  }
+
+  59%, 63% {
+    opacity: 1;
+  }
+
+  64% {
+    opacity: 0.5;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .call-phone-buzz,
+  .call-ring-lines {
+    animation: none;
+  }
+}
